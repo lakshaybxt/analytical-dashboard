@@ -2,6 +2,7 @@ package com.analytics.dashboard.configuration;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,21 @@ public class SparkConfig {
         return new SparkConf()
                 .setAppName(appName)
                 .setMaster(masterUri)
+                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 .set("spark.ui.enabled", "false");
     }
 
+//    @Bean
+//    public JavaSparkContext sc() {
+//        return new JavaSparkContext(conf());
+//    }
+
     @Bean
-    public JavaSparkContext sc() {
-        return new JavaSparkContext(conf());
+    public SparkSession sparkSession() {
+        return SparkSession.builder()
+                .appName(appName)
+                .master(masterUri)
+                .config(conf())
+                .getOrCreate();
     }
 }
