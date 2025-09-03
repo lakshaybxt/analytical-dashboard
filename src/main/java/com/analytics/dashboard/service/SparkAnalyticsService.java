@@ -1,6 +1,7 @@
 package com.analytics.dashboard.service;
 
 import com.analytics.dashboard.domain.dto.DepartmentStatsDTO;
+import com.analytics.dashboard.util.SparkUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -20,6 +21,7 @@ import static org.apache.spark.sql.functions.min;
 public class SparkAnalyticsService {
 
     private final SparkSession sparkSession;
+    private final SparkUtils sparkUtils;
 
     @Value("${spring.datasource.url}")
     private String dbUrl;
@@ -31,14 +33,8 @@ public class SparkAnalyticsService {
     private String dbPassword;
 
     public Dataset<Row> loadEmployeeData() {
-        Properties props = new Properties();
 
-        props.put("user", dbUser);
-        props.put("password", dbPassword);
-        props.setProperty("driver", "org.postgresql.Driver");
-
-        return sparkSession.read()
-                .jdbc(dbUrl, "employee", props);
+        return sparkUtils.readTable("employee");
     }
 
     public List<DepartmentStatsDTO> calculateDepartmentStats() {
