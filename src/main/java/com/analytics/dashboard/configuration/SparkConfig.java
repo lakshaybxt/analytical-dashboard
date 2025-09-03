@@ -21,7 +21,7 @@ public class SparkConfig {
         return new SparkConf()
                 .setAppName(appName)
                 .setMaster(masterUri)
-                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+                .set("spark.serializer", "org.apache.spark.serializer.JavaSerializer")
                 .set("spark.ui.enabled", "false");
     }
 
