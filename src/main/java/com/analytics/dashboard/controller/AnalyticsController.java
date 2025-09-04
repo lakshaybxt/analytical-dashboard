@@ -66,5 +66,14 @@ public class AnalyticsController {
         }
     }
 
-    @GetMapping("/department-stats")
+    @GetMapping("/department-stats-sql")
+    public ResponseEntity<Map<String, Object>> getDepartmentStatsSQL() {
+        try {
+            List<DepartmentStatsDTO> stats = sparkAnalyticsService.calculateDepartmentStatsSQL();
+            return ResponseEntity.ok(Map.of("success", true, "data", stats));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
 }
