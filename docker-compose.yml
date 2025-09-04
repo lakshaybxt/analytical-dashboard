@@ -5,8 +5,8 @@ services:
       - "5432:5432"
     restart: always
     environment:
-#      POSTGRES_DB: employee
-#      POSTGRES_USER: employee
+      POSTGRES_DB: employee
+      POSTGRES_USER: employee
       POSTGRES_PASSWORD: employee
 
 
