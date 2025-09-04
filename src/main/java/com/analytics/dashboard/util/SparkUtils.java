@@ -1,13 +1,18 @@
 package com.analytics.dashboard.util;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
 @Component
+@RequiredArgsConstructor
+@Profile("!test")
 public class SparkUtils {
 
     private final SparkSession spark;
@@ -20,13 +25,6 @@ public class SparkUtils {
 
     @Value("${spring.datasource.password}")
     private String dbPassword;
-
-    public SparkUtils(SparkSession spark, String dbUrl, String dbUser, String dbPassword) {
-        this.spark = spark;
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
-    }
 
     private Properties getProps() {
         Properties props = new Properties();

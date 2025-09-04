@@ -1,7 +1,5 @@
 package com.analytics.dashboard.domain.entity;
 
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,39 +9,37 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
-@Entity
-@Table(name = "employee")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Employee {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id = String.valueOf(UUID.randomUUID());
 
-    @Column(name = "first_name", nullable = false)
+//    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+//    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", unique = true, nullable = false)
+//    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "department")
+//    @Column(name = "department")
     private String department;
 
-    @Column(name = "salary", precision = 10, scale = 2)
-    private BigDecimal salary;
+//    @Column(name = "salary", precision = 10, scale = 2)
+    private double salary;
 
-    @Column(name = "hire_date")
-    private LocalDate hireDate;
+//    @Column(name = "hire_date")
+    private String hireDate;
 
     public Employee(String firstName, String lastName, String email,
-                    String department, BigDecimal salary, LocalDate hireDate) {
+                    String department, double salary, String hireDate) {
+        this.id = String.valueOf(UUID.randomUUID());
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

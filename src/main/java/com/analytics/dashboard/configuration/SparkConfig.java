@@ -1,5 +1,6 @@
 package com.analytics.dashboard.configuration;
 
+import jakarta.annotation.PreDestroy;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
@@ -16,19 +17,16 @@ public class SparkConfig {
     @Value("${spark.master}")
     private String masterUri;
 
+    private SparkSession sparkSession;
+
     @Bean
     public SparkConf conf() {
         return new SparkConf()
                 .setAppName(appName)
                 .setMaster(masterUri)
-                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+                .set("spark.serializer", "org.apache.spark.serializer.JavaSerializer")
                 .set("spark.ui.enabled", "false");
     }
-
-//    @Bean
-//    public JavaSparkContext sc() {
-//        return new JavaSparkContext(conf());
-//    }
 
     @Bean
     public SparkSession sparkSession() {
@@ -37,5 +35,13 @@ public class SparkConfig {
                 .master(masterUri)
                 .config(conf())
                 .getOrCreate();
+    }
+
+    @PreDestroy
+    public void closeSparkSession() {
+        if (sparkSession != null) {
+            sparkSession.stop();
+            System.out.println("✅ SparkSession stopped cleanly.");
+        }
     }
 }
